@@ -1,0 +1,41 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create_tables" author="robinx51">
+        <createTable tableName="rates">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="pk_rates" nullable="false"/>
+            </column>
+            <column name="currency_id" type="varchar"/>
+            <column name="country_id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="pk_countries" nullable="false"/>
+            </column>
+            <column name="rate_dict_id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="pk_rate_dict" nullable="false"/>
+            </column>
+            <column name="rate_date" type="timestamp"/>
+            <column name="nominal" type="BIGINT"/>
+            <column name="value" type="NUMERIC"/>
+            <column name="created" type="timestamp"/>
+            <column name="updated" type="timestamp"/>
+        </createTable>
+        <createTable tableName="countries">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="pk_countries" nullable="false"/>
+            </column>
+            <column name="name" type="varchar"/>
+            <column name="num_code" type="integer"/>
+            <column name="charCode" type="varchar"/>
+        </createTable>
+        <createTable tableName="rate_dict">
+            <column name="id" type="serial">
+                <constraints primaryKey="true" primaryKeyName="pk_rate_dict" nullable="false"/>
+            </column>
+            <column name="name" type="varchar"/>
+            <column name="num_code" type="integer"/>
+            <column name="charCode" type="varchar"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

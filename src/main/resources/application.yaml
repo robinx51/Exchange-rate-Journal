@@ -1,3 +1,27 @@
+server.port: 8088
+
+logging:
+  level:
+    ru.journal: DEBUG
+  file:
+    name: ./logs/database.log
+    path: logs
+
 spring:
   application:
     name: Exchange rate Journal
+  profiles:
+    active: dev
+  liquibase:
+    change-log: db/changelog/changelog.xml
+  datasource:
+    url: ${datasource.url}
+    username: ${datasource.username}
+    password: ${datasource.password}
+  jpa:
+    hibernate.ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
+
+api-url:
+  cbr-daily: https://www.cbr-xml-daily.ru/daily_utf8.xml
