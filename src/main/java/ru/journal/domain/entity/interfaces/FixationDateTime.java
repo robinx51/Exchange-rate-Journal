@@ -1,4 +1,4 @@
-package ru.journal.db.entity.interfaces;
+package ru.journal.domain.entity.interfaces;
 
 import java.time.LocalDateTime;
 

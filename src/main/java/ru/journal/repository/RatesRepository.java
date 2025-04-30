@@ -1,7 +1,7 @@
-package ru.journal.db.repository;
+package ru.journal.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.journal.db.entity.RateEntity;
+import ru.journal.domain.entity.RateEntity;
 
 public interface RatesRepository extends JpaRepository<RateEntity, Long> {
 }

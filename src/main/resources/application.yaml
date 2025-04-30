@@ -15,11 +15,11 @@ spring:
   liquibase:
     change-log: db/changelog/changelog.xml
   datasource:
-    url: ${datasource.url}
+    url: jdbc:postgresql://localhost:5432/Journal
     username: ${datasource.username}
     password: ${datasource.password}
   jpa:
-    hibernate.ddl-auto: update
+    hibernate.ddl-auto: validate
     properties:
       hibernate.dialect: org.hibernate.dialect.PostgreSQLDialect
 

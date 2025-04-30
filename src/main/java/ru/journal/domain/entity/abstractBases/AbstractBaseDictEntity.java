@@ -1,12 +1,11 @@
-package ru.journal.db.entity.abstractBases;
+package ru.journal.domain.entity.abstractBases;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
 @Getter @Setter
-@Inheritance(strategy = InheritanceType.JOINED)
+@MappedSuperclass
 public abstract class AbstractBaseDictEntity extends AbstractBaseEntity {
     @Column(name = "name")
     private String name;

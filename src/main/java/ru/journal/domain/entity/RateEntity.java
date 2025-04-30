@@ -1,17 +1,16 @@
-package ru.journal.db.entity;
+package ru.journal.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import ru.journal.db.entity.abstractBases.AbstractBaseFixationDateTimeEntity;
+import ru.journal.domain.entity.abstractBases.AbstractBaseFixationDateTimeEntity;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-@EqualsAndHashCode(callSuper = true)
+@Getter
+@Setter
 @Entity
-@Data
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @DiscriminatorValue("rates")
@@ -20,16 +19,12 @@ public class RateEntity extends AbstractBaseFixationDateTimeEntity implements Se
     @Column(name = "currency_id")
     private String currencyId;
 
-    //private Long countryId;
-
     @JoinColumn(name = "country_id")
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private CountryEntity country;
 
-    //private Long rateDictId;
-
     @JoinColumn(name = "rate_dict_id")
-    @OneToOne(fetch = FetchType.LAZY, optional = false)
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
     private RateDictEntity rateDict;
 
     @Column(name = "rate_date")
@@ -40,21 +35,4 @@ public class RateEntity extends AbstractBaseFixationDateTimeEntity implements Se
 
     @Column(name = "value")
     private BigDecimal value;
-
-    @Override
-    public LocalDateTime getCreated() {
-        return created;
-    }
-    @Override
-    public void setCreated(LocalDateTime created) {
-        this.created = created;
-    }
-    @Override
-    public LocalDateTime getUpdated() {
-        return updated;
-    }
-    @Override
-    public void setUpdated(LocalDateTime updated) {
-        this.updated = updated;
-    }
 }

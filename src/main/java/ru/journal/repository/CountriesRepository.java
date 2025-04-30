@@ -1,7 +1,7 @@
-package ru.journal.db.repository;
+package ru.journal.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.journal.db.entity.CountryEntity;
+import ru.journal.domain.entity.CountryEntity;
 
 public interface CountriesRepository extends JpaRepository<CountryEntity, Long> {
 }

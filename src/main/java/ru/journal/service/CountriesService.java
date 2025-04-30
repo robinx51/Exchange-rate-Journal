@@ -1,25 +1,25 @@
-package ru.journal.db.service;
+package ru.journal.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.journal.db.entity.RateDictEntity;
-import ru.journal.db.repository.RateDictRepository;
+import ru.journal.domain.entity.CountryEntity;
+import ru.journal.repository.CountriesRepository;
 
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class RateDictService {
-    private RateDictRepository repository;
+public class CountriesService {
+    private CountriesRepository repository;
 
-    public void addRecord(RateDictEntity entity) {
+    public void addRecord(CountryEntity entity) {
         log.info("Добавление rate {} в БД", entity.getName());
         repository.save(entity);
     }
 
-    public List<RateDictEntity> getAll() {
+    public List<CountryEntity> getAll() {
         return repository.findAll();
     }
 }

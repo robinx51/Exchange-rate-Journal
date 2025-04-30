@@ -1,11 +1,10 @@
-package ru.journal.db.service;
+package ru.journal.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.journal.db.entity.RateEntity;
-import ru.journal.db.repository.RatesRepository;
+import ru.journal.domain.entity.RateEntity;
+import ru.journal.repository.RatesRepository;
 
 import java.util.List;
 
