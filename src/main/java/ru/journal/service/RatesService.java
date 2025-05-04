@@ -12,14 +12,18 @@ import java.util.List;
 @Slf4j
 @RequiredArgsConstructor
 public class RatesService {
-    private RatesRepository repository;
+    private final RatesRepository repository;
 
-    public void addRecord(RateEntity entity) {
+    public void save(RateEntity entity) {
         log.info("Добавление rate {} в БД", entity.getCurrencyId());
         repository.save(entity);
     }
 
     public List<RateEntity> getAll() {
         return repository.findAll();
+    }
+
+    public void saveAll(List<RateEntity> entities) {
+        repository.saveAll(entities);
     }
 }

@@ -6,20 +6,20 @@ import org.springframework.stereotype.Service;
 import ru.journal.domain.entity.CountryEntity;
 import ru.journal.repository.CountriesRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class CountriesService {
-    private CountriesRepository repository;
+    private final CountriesRepository repository;
 
-    public void addRecord(CountryEntity entity) {
+    public void save(CountryEntity entity) {
         log.info("Добавление rate {} в БД", entity.getName());
         repository.save(entity);
     }
 
-    public List<CountryEntity> getAll() {
-        return repository.findAll();
+    public Optional<CountryEntity> getByNumCode(int numCode) {
+        return repository.getReferenceByNumCode(numCode);
     }
 }

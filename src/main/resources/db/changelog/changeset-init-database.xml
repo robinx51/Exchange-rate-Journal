@@ -7,23 +7,23 @@
         <sql>
             CREATE TABLE countries (
                 id              SERIAL PRIMARY KEY,
-                name            VARCHAR(32),
+                name            VARCHAR(64),
                 num_code        INTEGER,
-                char_code       VARCHAR(32)
+                char_code       VARCHAR(64)
             );
 
             CREATE TABLE rate_dict (
                 id              SERIAL PRIMARY KEY,
-                name            VARCHAR(32),
+                name            VARCHAR(64),
                 num_code        INTEGER,
-                char_code       VARCHAR(32)
+                char_code       VARCHAR(64)
             );
 
             CREATE TABLE rates (
                 id              SERIAL PRIMARY KEY,
                 created         TIMESTAMP WITHOUT TIME ZONE,
                 updated         TIMESTAMP WITHOUT TIME ZONE,
-                currency_id     VARCHAR(32),
+                currency_id     VARCHAR(64),
                 country_id      INTEGER NOT NULL,
                 rate_dict_id    INTEGER NOT NULL,
                 rate_date       TIMESTAMP WITHOUT TIME ZONE,

@@ -6,4 +6,6 @@
             http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
     <include file="changeset-init-database.xml" relativeToChangelogFile="true"/>
+    <include file="changeset-insert-countries.xml" relativeToChangelogFile="true"/>
+
 </databaseChangeLog>
