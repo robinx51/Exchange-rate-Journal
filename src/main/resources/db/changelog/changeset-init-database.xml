@@ -1,0 +1,37 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="create_tables" author="robinx51">
+        <sql>
+            CREATE TABLE countries (
+                id              SERIAL PRIMARY KEY,
+                name            VARCHAR(32),
+                num_code        INTEGER,
+                char_code       VARCHAR(32)
+            );
+
+            CREATE TABLE rate_dict (
+                id              SERIAL PRIMARY KEY,
+                name            VARCHAR(32),
+                num_code        INTEGER,
+                char_code       VARCHAR(32)
+            );
+
+            CREATE TABLE rates (
+                id              SERIAL PRIMARY KEY,
+                created         TIMESTAMP WITHOUT TIME ZONE,
+                updated         TIMESTAMP WITHOUT TIME ZONE,
+                currency_id     VARCHAR(32),
+                country_id      INTEGER NOT NULL,
+                rate_dict_id    INTEGER NOT NULL,
+                rate_date       TIMESTAMP WITHOUT TIME ZONE,
+                nominal         BIGINT,
+                value           DECIMAL,
+                FOREIGN KEY (country_id) REFERENCES countries(id),
+                FOREIGN KEY (rate_dict_id) REFERENCES rate_dict(id)
+            );
+        </sql>
+    </changeSet>
+</databaseChangeLog>

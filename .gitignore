@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+/Database/src/main/resources/application-dev.yaml
+/Database/Database.iml
+/src/main/resources/application-dev.yaml
+
+/logs
