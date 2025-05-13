@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface CountriesRepository extends JpaRepository<CountryEntity, Long> {
     Optional<CountryEntity> getReferenceByNumCode(int numCode);
+
+    CountryEntity getReferenceByName(String name);
 }

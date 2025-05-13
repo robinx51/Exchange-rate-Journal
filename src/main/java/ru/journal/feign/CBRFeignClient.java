@@ -5,7 +5,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @FeignClient(
         name = "CBR",
-        url = "${apiUrl.cbrDaily}"
+        url = "${api-url.cbr-daily}"
 )
 public interface CBRFeignClient {
     @GetMapping(

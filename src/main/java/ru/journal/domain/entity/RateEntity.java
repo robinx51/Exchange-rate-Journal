@@ -6,7 +6,7 @@ import ru.journal.domain.entity.abstractBases.AbstractBaseFixationDateTimeEntity
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -28,7 +28,7 @@ public class RateEntity extends AbstractBaseFixationDateTimeEntity implements Se
     private RateDictEntity rateDict;
 
     @Column(name = "rate_date")
-    private LocalDateTime rateDate;
+    private LocalDate rateDate;
 
     @Column(name = "nominal")
     private Long nominal;

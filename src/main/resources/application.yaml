@@ -20,6 +20,12 @@ spring:
     password: ${datasource.password}
   jpa:
     hibernate.ddl-auto: validate
+  properties:
+    hibernate:
+      jdbc:
+        batch_size: 43
 
-apiUrl:
-  cbrDaily: https://www.cbr-xml-daily.ru/daily_utf8.xml
+api-url:
+  cbr-daily: https://www.cbr-xml-daily.ru/daily_utf8.xml
+
+scheduled-rate: PT1H

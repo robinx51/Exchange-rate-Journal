@@ -5,9 +5,8 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.journal.domain.entity.CountryEntity;
 import ru.journal.domain.entity.RateDictEntity;
 import ru.journal.domain.entity.RateEntity;
@@ -17,7 +16,9 @@ import ru.journal.feign.CBRFeignClient;
 
 import java.math.BigDecimal;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -25,60 +26,51 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CBRService {
     /// TODO:
-    /// - автоматическая синхронизация курса валют с ЦБ по расписанию;
-    /// - ручной запуск синхронизации курса валют с ЦБ;
     /// - чтение журнала с фильтрацией, пагинацией и сортировкой по параметрам;
+    ///
     /// - чтение данных справочника стран-носителей валюты;
     /// - чтение данных справочника валюты;
     /// - редактирование курса валют.
+    ///
+    /// в pom.xml добавить плагин, добавляющий в манифест главный класс
 
     private final CBRFeignClient cbrFeignClient;
     private final RatesService ratesService;
     private final CountriesService countriesService;
     private final RateDictService rateDictService;
 
-    public ResponseEntity<String> handleRates() {
+    @Transactional
+    public boolean handleRates() {
         CBRDto response;
         try {
             response = getRates();
         }
         catch (Exception e) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error parsing XML response");
+            log.error("XML parsed with error: ", e);
+            return false;
         }
         if (response == null) {
-            return ResponseEntity
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error parsing XML response");
+            log.error("Received null response");
+            return false;
         }
         log.debug("XML successfully parsed");
+        DateTimeFormatter pattern = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate rateDate = LocalDate.parse(response.getDate(), pattern);
+        List<RateEntity> rates = ratesService.getByRateDate(rateDate);
 
-        List<RateEntity> rates = ratesService.getAll();
-        LocalDateTime rateDate = LocalDateTime.now();
-
-        if (rates.isEmpty())
+        if (rates.isEmpty()) {
             rates = createRates(rateDate, response.getValutes());
-        else
-            updateRates(rateDate, rates, response.getValutes());
+        }
+        else {
+            updateRates(rates, response.getValutes());
+        }
 
         ratesService.saveAll(rates);
-        return ResponseEntity
-                .status(HttpStatus.OK)
-                .body("Success");
+        log.debug("Updated {} rates", rates.size());
+        return true;
     }
 
-    private void updateRates(LocalDateTime date, List<RateEntity> rates, List<ValuteDto> valutes) {
-        Map<Integer, BigDecimal> values = getValuesMap(valutes);
-        for (RateEntity rate : rates) {
-            rate.setUpdated(LocalDateTime.now());
-            rate.setNominal(rate.getNominal());
-            rate.setValue(values.get(rate.getId()));
-            rate.setRateDate(date);
-        }
-    }
-
-    private List<RateEntity> createRates(LocalDateTime rateDate, List<ValuteDto> valutes) {
+    private List<RateEntity> createRates(LocalDate rateDate, List<ValuteDto> valutes) {
         List<RateEntity> rates = new ArrayList<>();
         for (ValuteDto valute : valutes) {
             RateEntity rate = new RateEntity();
@@ -95,6 +87,14 @@ public class CBRService {
         return rates;
     }
 
+    private void updateRates(List<RateEntity> rates, List<ValuteDto> valutes) {
+        Map<Integer, BigDecimal> valuesMap = getValuesMap(valutes);
+        for (RateEntity rate : rates) {
+            rate.setUpdated(LocalDateTime.now());
+            rate.setValue(valuesMap.get(rate.getCountry().getNumCode()));
+        }
+    }
+
     private Map<Integer, BigDecimal> getValuesMap(List<ValuteDto> valutes) {
         return valutes.stream()
                 .collect(Collectors.toMap(ValuteDto::getNumCode, ValuteDto::getValue));
@@ -103,15 +103,7 @@ public class CBRService {
     private CountryEntity getCountry(ValuteDto valute) {
         int numCode = valute.getNumCode();
         Optional<CountryEntity> entity = countriesService.getByNumCode(numCode);
-        return entity.orElseGet(() -> {
-            CountryEntity country = new CountryEntity();
-            country.setNumCode(numCode);
-            country.setName(valute.getName());
-            country.setCharCode(valute.getCharCode());
-
-            countriesService.save(country);
-            return country;
-        });
+        return entity.orElseGet(() -> countriesService.getByName("unknown"));
     }
 
     private RateDictEntity getRateDict(ValuteDto valute) {

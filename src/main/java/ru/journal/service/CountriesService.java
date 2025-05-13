@@ -14,12 +14,11 @@ import java.util.Optional;
 public class CountriesService {
     private final CountriesRepository repository;
 
-    public void save(CountryEntity entity) {
-        log.info("Добавление rate {} в БД", entity.getName());
-        repository.save(entity);
-    }
-
     public Optional<CountryEntity> getByNumCode(int numCode) {
         return repository.getReferenceByNumCode(numCode);
+    }
+
+    public CountryEntity getByName(String name) {
+        return repository.getReferenceByName(name);
     }
 }

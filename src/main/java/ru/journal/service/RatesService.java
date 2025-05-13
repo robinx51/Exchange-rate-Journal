@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.journal.domain.entity.RateEntity;
 import ru.journal.repository.RatesRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -19,11 +20,11 @@ public class RatesService {
         repository.save(entity);
     }
 
-    public List<RateEntity> getAll() {
-        return repository.findAll();
-    }
-
     public void saveAll(List<RateEntity> entities) {
         repository.saveAll(entities);
+    }
+
+    public List<RateEntity> getByRateDate(LocalDate date) {
+        return repository.findAllByRateDate(date);
     }
 }
