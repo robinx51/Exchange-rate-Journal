@@ -7,7 +7,8 @@ import ru.journal.domain.entity.abstractBases.AbstractBaseDictEntity;
 import java.io.Serializable;
 
 @Entity
-@Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @Table(name = "countries")
 public class CountryEntity  extends AbstractBaseDictEntity implements Serializable {

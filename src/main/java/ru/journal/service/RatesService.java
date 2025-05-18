@@ -2,9 +2,12 @@ package ru.journal.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import ru.journal.domain.entity.RateEntity;
+import ru.journal.dto.JournalFilter;
 import ru.journal.repository.RatesRepository;
+import ru.journal.specification.RatesSpecification;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -26,5 +29,15 @@ public class RatesService {
 
     public List<RateEntity> getByRateDate(LocalDate date) {
         return repository.findAllByRateDate(date);
+    }
+
+    public List<RateEntity> filteredSearch(JournalFilter criteria) {
+        Specification<RateEntity> spec = Specification
+                .where(RatesSpecification.likeRateDates(criteria.getRateDate()))
+                .and(RatesSpecification.likeCountries(criteria.getCountryName()))
+                .and(RatesSpecification.likeRateCodes(criteria.getCharCode()))
+                .and(RatesSpecification.likeNominal(criteria.getNominal()))
+                .and(RatesSpecification.likeValues(criteria.getValue()));
+        return repository.findAll(spec);
     }
 }

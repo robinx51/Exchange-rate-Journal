@@ -5,12 +5,16 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.journal.domain.entity.CountryEntity;
 import ru.journal.domain.entity.RateDictEntity;
 import ru.journal.domain.entity.RateEntity;
 import ru.journal.dto.CBRDto;
+import ru.journal.dto.JournalFilter;
+import ru.journal.dto.JournalResponse;
 import ru.journal.dto.ValuteDto;
 import ru.journal.feign.CBRFeignClient;
 
@@ -26,21 +30,29 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CBRService {
     /// TODO:
-    /// - чтение журнала с фильтрацией, пагинацией и сортировкой по параметрам;
+    /// - чтение журнала с пагинацией и сортировкой по параметрам;
     ///
     /// - чтение данных справочника стран-носителей валюты;
     /// - чтение данных справочника валюты;
     /// - редактирование курса валют.
-    ///
-    /// в pom.xml добавить плагин, добавляющий в манифест главный класс
 
     private final CBRFeignClient cbrFeignClient;
     private final RatesService ratesService;
     private final CountriesService countriesService;
     private final RateDictService rateDictService;
 
+
+    public ResponseEntity<List<JournalResponse>> handleRates(JournalFilter filter) {
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ratesService.filteredSearch(filter).stream()
+                        .map(JournalResponse::new)
+                        .collect(Collectors.toList())
+                );
+    }
+
     @Transactional
-    public boolean handleRates() {
+    public boolean updateRates() {
         CBRDto response;
         try {
             response = getRates();
