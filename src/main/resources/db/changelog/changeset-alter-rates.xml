@@ -1,0 +1,12 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="alter-column-rate_date" author="robinx51">
+        <sql>
+            ALTER TABLE rates
+            ALTER COLUMN rate_date TYPE DATE;
+        </sql>
+    </changeSet>
+</databaseChangeLog>

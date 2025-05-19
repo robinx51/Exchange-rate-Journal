@@ -9,6 +9,7 @@ import ru.journal.domain.entity.interfaces.Identifiable;
 @MappedSuperclass
 public abstract class AbstractBaseEntity implements Identifiable {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
-    private int id;
+    private Integer id;
 }

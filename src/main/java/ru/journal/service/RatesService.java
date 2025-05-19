@@ -6,20 +6,25 @@ import org.springframework.stereotype.Service;
 import ru.journal.domain.entity.RateEntity;
 import ru.journal.repository.RatesRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class RatesService {
-    private RatesRepository repository;
+    private final RatesRepository repository;
 
-    public void addRecord(RateEntity entity) {
+    public void save(RateEntity entity) {
         log.info("Добавление rate {} в БД", entity.getCurrencyId());
         repository.save(entity);
     }
 
-    public List<RateEntity> getAll() {
-        return repository.findAll();
+    public void saveAll(List<RateEntity> entities) {
+        repository.saveAll(entities);
+    }
+
+    public List<RateEntity> getByRateDate(LocalDate date) {
+        return repository.findAllByRateDate(date);
     }
 }

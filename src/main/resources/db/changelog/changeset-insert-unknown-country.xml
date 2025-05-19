@@ -1,0 +1,12 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+            http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+    <changeSet id="insert_unknown_country" author="robinx51">
+        <sql>
+            INSERT INTO countries (name, num_code, char_code)
+            VALUES ('unknown', 0, 'unknown');
+        </sql>
+    </changeSet>
+</databaseChangeLog>

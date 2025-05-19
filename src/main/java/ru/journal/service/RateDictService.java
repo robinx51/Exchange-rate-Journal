@@ -6,20 +6,20 @@ import org.springframework.stereotype.Service;
 import ru.journal.domain.entity.RateDictEntity;
 import ru.journal.repository.RateDictRepository;
 
-import java.util.List;
+import java.util.Optional;
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class RateDictService {
-    private RateDictRepository repository;
+    private final RateDictRepository repository;
 
-    public void addRecord(RateDictEntity entity) {
+    public void save(RateDictEntity entity) {
         log.info("Добавление rate {} в БД", entity.getName());
         repository.save(entity);
     }
 
-    public List<RateDictEntity> getAll() {
-        return repository.findAll();
+    public Optional<RateDictEntity> getByNumCode(int numCode) {
+        return repository.getReferenceByNumCode(numCode);
     }
 }
