@@ -4,8 +4,8 @@ import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 import org.springframework.util.StringUtils;
-import ru.journal.domain.entity.RateDictEntity;
-import ru.journal.domain.entity.RateDictEntity_;
+import ru.journal.model.domain.entity.RateDictEntity;
+import ru.journal.model.domain.entity.RateDictEntity_;
 
 import java.util.List;
 

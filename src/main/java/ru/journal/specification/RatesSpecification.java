@@ -5,11 +5,15 @@ import jakarta.persistence.criteria.Root;
 import jakarta.persistence.criteria.Subquery;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
-import ru.journal.domain.entity.*;
+import ru.journal.model.domain.entity.*;
+import ru.journal.model.domain.entity.CountryEntity;
+import ru.journal.model.domain.entity.RateDictEntity;
+import ru.journal.model.domain.entity.RateEntity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Objects;
 
 @Component
 public class RatesSpecification {
@@ -29,7 +33,7 @@ public class RatesSpecification {
                 return null;
             }
 
-            Subquery<Long> countrySubquery = query.subquery(Long.class);
+            Subquery<Long> countrySubquery = Objects.requireNonNull(query).subquery(Long.class);
             Root<CountryEntity> countryRoot = countrySubquery.from(CountryEntity.class);
 
             Predicate countryPredicate = CountrySpecification.likeCountryNames(countryNames)
@@ -50,7 +54,7 @@ public class RatesSpecification {
                 return null;
             }
 
-            Subquery<Long> rateSubquery = query.subquery(Long.class);
+            Subquery<Long> rateSubquery = Objects.requireNonNull(query).subquery(Long.class);
             Root<RateDictEntity> rateRoot = rateSubquery.from(RateDictEntity.class);
 
             Predicate ratePredicate = RateDictSpecification.likeRateCodes(rateCodes)

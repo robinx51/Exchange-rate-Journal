@@ -2,10 +2,12 @@ package ru.journal.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import ru.journal.domain.entity.RateEntity;
-import ru.journal.dto.JournalFilter;
+import ru.journal.model.domain.entity.RateEntity;
+import ru.journal.model.dto.JournalFilter;
 import ru.journal.repository.RatesRepository;
 import ru.journal.specification.RatesSpecification;
 
@@ -18,11 +20,6 @@ import java.util.List;
 public class RatesService {
     private final RatesRepository repository;
 
-    public void save(RateEntity entity) {
-        log.info("Добавление rate {} в БД", entity.getCurrencyId());
-        repository.save(entity);
-    }
-
     public void saveAll(List<RateEntity> entities) {
         repository.saveAll(entities);
     }
@@ -31,13 +28,13 @@ public class RatesService {
         return repository.findAllByRateDate(date);
     }
 
-    public List<RateEntity> filteredSearch(JournalFilter criteria) {
+    public Page<RateEntity> filteredSearch(JournalFilter criteria, Pageable pageable) {
         Specification<RateEntity> spec = Specification
                 .where(RatesSpecification.likeRateDates(criteria.getRateDate()))
                 .and(RatesSpecification.likeCountries(criteria.getCountryName()))
                 .and(RatesSpecification.likeRateCodes(criteria.getCharCode()))
                 .and(RatesSpecification.likeNominal(criteria.getNominal()))
                 .and(RatesSpecification.likeValues(criteria.getValue()));
-        return repository.findAll(spec);
+        return repository.findAll(spec, pageable);
     }
 }

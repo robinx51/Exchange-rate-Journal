@@ -2,7 +2,7 @@ package ru.journal.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
-import ru.journal.domain.entity.RateDictEntity;
+import ru.journal.model.domain.entity.RateDictEntity;
 
 import java.util.Optional;
 

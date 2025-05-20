@@ -5,17 +5,20 @@ import com.fasterxml.jackson.dataformat.xml.XmlMapper;
 import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.journal.domain.entity.CountryEntity;
-import ru.journal.domain.entity.RateDictEntity;
-import ru.journal.domain.entity.RateEntity;
-import ru.journal.dto.CBRDto;
-import ru.journal.dto.JournalFilter;
-import ru.journal.dto.JournalResponse;
-import ru.journal.dto.ValuteDto;
+import ru.journal.model.domain.entity.CountryEntity;
+import ru.journal.model.domain.entity.RateDictEntity;
+import ru.journal.model.domain.entity.RateEntity;
+import ru.journal.model.dto.CBRDto;
+import ru.journal.model.dto.JournalFilter;
+import ru.journal.model.dto.JournalResponse;
+import ru.journal.model.dto.ValuteDto;
 import ru.journal.feign.CBRFeignClient;
 
 import java.math.BigDecimal;
@@ -30,7 +33,6 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class CBRService {
     /// TODO:
-    /// - чтение журнала с пагинацией и сортировкой по параметрам;
     ///
     /// - чтение данных справочника стран-носителей валюты;
     /// - чтение данных справочника валюты;
@@ -42,12 +44,13 @@ public class CBRService {
     private final RateDictService rateDictService;
 
 
-    public ResponseEntity<List<JournalResponse>> handleRates(JournalFilter filter) {
+    public ResponseEntity<List<JournalResponse>> handleRates(JournalFilter filter, int page, int size, String[] sort) {
+        Pageable pageable = createPageRequest(page, size, sort);
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(ratesService.filteredSearch(filter).stream()
+                .body(ratesService.filteredSearch(filter, pageable)
                         .map(JournalResponse::new)
-                        .collect(Collectors.toList())
+                        .getContent()
                 );
     }
 
@@ -145,5 +148,19 @@ public class CBRService {
         } catch (JsonProcessingException e) {
             return null;
         }
+    }
+
+    private Pageable createPageRequest(int page, int size, String[] sort) {
+        List<Sort.Order> orders = new ArrayList<>();
+
+        for (String sortOrder : sort) {
+            String[] _sort = sortOrder.split(":");
+            orders.add(new Sort.Order(
+                    _sort.length > 1 ? Sort.Direction.fromString(_sort[1]) : Sort.Direction.DESC,
+                    _sort[0]
+            ));
+        }
+
+        return PageRequest.of(page, size, Sort.by(orders));
     }
 }

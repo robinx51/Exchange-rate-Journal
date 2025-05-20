@@ -1,9 +1,9 @@
-package ru.journal.domain.entity.abstractBases;
+package ru.journal.model.domain.entity.abstractBases;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.journal.domain.entity.interfaces.Identifiable;
+import ru.journal.model.domain.entity.interfaces.Identifiable;
 
 @Getter @Setter
 @MappedSuperclass
