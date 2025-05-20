@@ -1,10 +1,10 @@
-package ru.journal.dto;
+package ru.journal.model.dto;
 
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import lombok.Getter;
 import lombok.Setter;
-import ru.journal.dto.adapter.BigDecimalDeserializer;
+import ru.journal.model.dto.adapter.BigDecimalDeserializer;
 
 import java.math.BigDecimal;
 

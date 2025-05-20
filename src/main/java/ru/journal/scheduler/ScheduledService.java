@@ -15,6 +15,6 @@ public class ScheduledService {
     @Scheduled(fixedRateString = "${scheduled-rate}")
     private void updateRates() {
         log.info("Scheduled update rates");
-        cbrService.handleRates();
+        cbrService.updateRates();
     }
 }

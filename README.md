@@ -31,5 +31,6 @@ datasource:
 и ввести команду `java -jar ExchangeRateJournal-0.0.1-SNAPSHOT.jar`
 ___
 ## Использование программы
-Перейти по ссылке: http://localhost:8088/journal/update для 
-запуска ручного обновления курса валют
+Swagger UI: http://localhost:8088/swagger-ui/index.html#/
+
+![swagger.png](assets/swagger.png)

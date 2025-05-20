@@ -1,11 +1,12 @@
 package ru.journal.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import ru.journal.domain.entity.CountryEntity;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import ru.journal.model.domain.entity.CountryEntity;
 
 import java.util.Optional;
 
-public interface CountriesRepository extends JpaRepository<CountryEntity, Long> {
+public interface CountriesRepository extends JpaRepository<CountryEntity, Long>, JpaSpecificationExecutor<CountryEntity> {
     Optional<CountryEntity> getReferenceByNumCode(int numCode);
 
     CountryEntity getReferenceByName(String name);

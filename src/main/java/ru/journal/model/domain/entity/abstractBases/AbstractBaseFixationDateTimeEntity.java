@@ -1,9 +1,9 @@
-package ru.journal.domain.entity.abstractBases;
+package ru.journal.model.domain.entity.abstractBases;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import ru.journal.domain.entity.interfaces.FixationDateTime;
+import ru.journal.model.domain.entity.interfaces.FixationDateTime;
 
 import java.time.LocalDateTime;
 

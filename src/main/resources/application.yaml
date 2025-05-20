@@ -4,7 +4,7 @@ logging:
   level:
     ru.journal: DEBUG
   file:
-    name: ./logs/database.log
+    name: ./logs/journal.log
     path: logs
 
 spring:

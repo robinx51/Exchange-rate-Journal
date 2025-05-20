@@ -1,4 +1,4 @@
-package ru.journal.domain.entity.abstractBases;
+package ru.journal.model.domain.entity.abstractBases;
 
 import jakarta.persistence.*;
 import lombok.Getter;

@@ -7,11 +7,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.journal.domain.entity.CountryEntity;
-import ru.journal.domain.entity.RateDictEntity;
-import ru.journal.domain.entity.RateEntity;
-import ru.journal.dto.CBRDto;
-import ru.journal.dto.ValuteDto;
+import ru.journal.model.domain.entity.CountryEntity;
+import ru.journal.model.domain.entity.RateDictEntity;
+import ru.journal.model.domain.entity.RateEntity;
+import ru.journal.model.dto.CBRDto;
+import ru.journal.model.dto.ValuteDto;
 import ru.journal.feign.CBRFeignClient;
 
 import java.math.BigDecimal;
@@ -25,22 +25,13 @@ import java.util.stream.Collectors;
 @Service @Slf4j
 @RequiredArgsConstructor
 public class CBRService {
-    /// TODO:
-    /// - чтение журнала с фильтрацией, пагинацией и сортировкой по параметрам;
-    ///
-    /// - чтение данных справочника стран-носителей валюты;
-    /// - чтение данных справочника валюты;
-    /// - редактирование курса валют.
-    ///
-    /// в pom.xml добавить плагин, добавляющий в манифест главный класс
-
     private final CBRFeignClient cbrFeignClient;
     private final RatesService ratesService;
     private final CountriesService countriesService;
     private final RateDictService rateDictService;
 
     @Transactional
-    public boolean handleRates() {
+    public boolean updateRates() {
         CBRDto response;
         try {
             response = getRates();
