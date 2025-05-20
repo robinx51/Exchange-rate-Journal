@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.journal.model.dto.JournalFilter;
 import ru.journal.model.dto.JournalResponse;
 import ru.journal.service.CBRService;
+import ru.journal.service.RatesService;
 
 import java.util.List;
 
@@ -24,6 +25,7 @@ import java.util.List;
 @RequestMapping("/journal")
 public class JournalController {
     private final CBRService cbrService;
+    private final RatesService ratesService;
 
     @Operation(summary = "Ручной запуск синхронизации курса валют с ЦБ")
     @ApiResponses(value = {
@@ -53,11 +55,13 @@ public class JournalController {
                     })
     })
     @GetMapping()
-    public ResponseEntity<List<JournalResponse>> findRates(
+    public ResponseEntity<List<JournalResponse>> findAll(
             JournalFilter filter,
             @RequestParam(defaultValue = "0") @Parameter(description = "Страница", example = "0") int page,
             @RequestParam(defaultValue = "5") @Parameter(description = "Количество элементов на странице", example = "5") int size,
             @RequestParam(defaultValue = "rateDate:desc") @Parameter(description = "Сортировка по параметрам", example = "rateDate:asc") String[] sort) {
-        return cbrService.handleRates(filter, page, size, sort);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(ratesService.findAll(filter, page, size, sort));
     }
 }
